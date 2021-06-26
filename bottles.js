@@ -6,7 +6,6 @@ const assertEqual = function (actual, expected) {
     actual === expected
       ? ['\x1b[2m\x1b[32m', '  ', 'Passed', '===']
       : ['\x1b[0m\x1b[31m', '\u274c', 'Failed', '!=='];
-
   console.log(
     color + emoji,
     `Assertion ${outcome}: ${actual} ${operator} ${expected}`
@@ -46,10 +45,14 @@ const assertArraysEqual = (arr1, arr2) => {
 
 const invest = (investment) => {
   const fullBottles = investment >> 1;
-  const emptyBottles = 0;
-  const caps = 0;
-  const total = fullBottles;
-  return { fullBottles, emptyBottles, caps, total };
+  return {
+    fullBottles,
+    emptyBottles: 0,
+    caps: 0,
+    total: fullBottles,
+    earnedFromBottles: 0,
+    earnedFromCaps: 0,
+  };
 };
 
 const drink = (inventory) => {
@@ -64,6 +67,7 @@ const redeemBottles = (inventory) => {
   inventory.fullBottles += count;
   inventory.emptyBottles -= count << 1;
   inventory.total += count;
+  inventory.earnedFromBottles += count;
 };
 
 const redeemCaps = (inventory) => {
@@ -71,6 +75,7 @@ const redeemCaps = (inventory) => {
   inventory.fullBottles += count;
   inventory.caps -= count << 2;
   inventory.total += count;
+  inventory.earnedFromCaps += count;
 };
 
 //------------------------------------------------------------------------------
@@ -84,23 +89,33 @@ const getTotalBottles = (investment) => {
     redeemBottles(inventory);
     redeemCaps(inventory);
   }
-  return inventory.total;
+  return inventory;
 };
 
-assertEqual(getTotalBottles(10), 15);
-assertEqual(getTotalBottles(20), 35);
-assertEqual(getTotalBottles(30), 55);
-assertEqual(getTotalBottles(40), 75);
+assertEqual(getTotalBottles(10).total, 15);
+assertEqual(getTotalBottles(20).total, 35);
+assertEqual(getTotalBottles(30).total, 55);
+assertEqual(getTotalBottles(40).total, 75);
 
 //------------------------------------------------------------------------------
 // Task 2: CLI
+// Task 3: Extended report
 
-const reportTotal = (total) => console.log('Total bottles: ' + total);
+const report = (inventory) => {
+  console.log(
+    `Total bottles:  ${inventory.total}\n` +
+      'Total earned:\n' +
+      `  From bottles: ${inventory.earnedFromBottles}\n` +
+      `  From caps:    ${inventory.earnedFromCaps}`
+  );
+};
 
 const processArgv = () => {
   const investment = process.argv[2];
   if (investment === undefined) return console.log('Nothing to invest?');
-  reportTotal(getTotalBottles(investment));
+
+  const inventory = getTotalBottles(investment);
+  report(inventory);
 };
 
 processArgv();

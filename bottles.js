@@ -74,7 +74,7 @@ const redeemCaps = (inventory) => {
 };
 
 //------------------------------------------------------------------------------
-// Actual function
+// Task 1: Total number of bottles
 
 const getTotalBottles = (investment) => {
   const inventory = invest(investment);
@@ -91,3 +91,16 @@ assertEqual(getTotalBottles(10), 15);
 assertEqual(getTotalBottles(20), 35);
 assertEqual(getTotalBottles(30), 55);
 assertEqual(getTotalBottles(40), 75);
+
+//------------------------------------------------------------------------------
+// Task 2: CLI
+
+const reportTotal = (total) => console.log('Total bottles: ' + total);
+
+const processArgv = () => {
+  const investment = process.argv[2];
+  if (investment === undefined) return console.log('Nothing to invest?');
+  reportTotal(getTotalBottles(investment));
+};
+
+processArgv();

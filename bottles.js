@@ -92,10 +92,10 @@ const getTotalBottles = (investment) => {
   return inventory;
 };
 
-assertEqual(getTotalBottles(10).total, 15);
-assertEqual(getTotalBottles(20).total, 35);
-assertEqual(getTotalBottles(30).total, 55);
-assertEqual(getTotalBottles(40).total, 75);
+// assertEqual(getTotalBottles(10).total, 15);
+// assertEqual(getTotalBottles(20).total, 35);
+// assertEqual(getTotalBottles(30).total, 55);
+// assertEqual(getTotalBottles(40).total, 75);
 
 //------------------------------------------------------------------------------
 // Task 2: CLI
@@ -103,10 +103,12 @@ assertEqual(getTotalBottles(40).total, 75);
 
 const report = (inventory) => {
   console.log(
-    `Total bottles:  ${inventory.total}\n` +
+    `Total bottles:     ${inventory.total}\n` +
+      `Remaining bottles: ${inventory.emptyBottles}\n` +
+      `Remaining caps:    ${inventory.caps}\n` +
       'Total earned:\n' +
-      `  From bottles: ${inventory.earnedFromBottles}\n` +
-      `  From caps:    ${inventory.earnedFromCaps}`
+      `  From bottles:    ${inventory.earnedFromBottles}\n` +
+      `  From caps:       ${inventory.earnedFromCaps}`
   );
 };
 

@@ -40,3 +40,54 @@ const assertArraysEqual = (arr1, arr2) => {
     `[${arr1.join(', ')}] ${operator} [${arr2.join(', ')}]`
   );
 };
+
+//------------------------------------------------------------------------------
+// Helper functions
+
+const invest = (investment) => {
+  const fullBottles = investment >> 1;
+  const emptyBottles = 0;
+  const caps = 0;
+  const total = fullBottles;
+  return { fullBottles, emptyBottles, caps, total };
+};
+
+const drink = (inventory) => {
+  const count = inventory.fullBottles;
+  inventory.fullBottles = 0;
+  inventory.emptyBottles += count;
+  inventory.caps += count;
+};
+
+const redeemBottles = (inventory) => {
+  const count = inventory.emptyBottles >> 1;
+  inventory.fullBottles += count;
+  inventory.emptyBottles -= count << 1;
+  inventory.total += count;
+};
+
+const redeemCaps = (inventory) => {
+  const count = inventory.caps >> 2;
+  inventory.fullBottles += count;
+  inventory.caps -= count << 2;
+  inventory.total += count;
+};
+
+//------------------------------------------------------------------------------
+// Actual function
+
+const getTotalBottles = (investment) => {
+  const inventory = invest(investment);
+
+  while (inventory.fullBottles) {
+    drink(inventory);
+    redeemBottles(inventory);
+    redeemCaps(inventory);
+  }
+  return inventory.total;
+};
+
+assertEqual(getTotalBottles(10), 15);
+assertEqual(getTotalBottles(20), 35);
+assertEqual(getTotalBottles(30), 55);
+assertEqual(getTotalBottles(40), 75);
